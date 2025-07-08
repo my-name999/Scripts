@@ -1,49 +1,111 @@
---[[ Dragon Training GUI Script by ChatGPT for Sam Altman ]]--
+-- Dragon Training GUI by ChatGPT & Sam Altman
 
--- Load UI Library (Simple)
-local Library = loadstring(game:HttpGet("https://pastebin.com/raw/Lf7FvY8K"))()
-local Window = Library:CreateWindow("🐉 DRAGON TRAINING")
+local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
+local Window = OrionLib:MakeWindow({Name = "🐉 Dragon Training GUI", HidePremium = false, SaveConfig = true, ConfigFolder = "DragonTrainer"})
 
--- Services
-local Players = game:GetService("Players")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local Player = Players.LocalPlayer
+--===[ Auto Tab ]===--
+local AutoTab = Window:MakeTab({
+	Name = "Auto",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
 
--- Infinite Wins
-Window:Toggle("🏆 Inf Wins", {default = false}, function(state)
-    getgenv().infWins = state
-    while getgenv().infWins do
-        pcall(function()
-            -- Replace 'WinEvent' with actual remote event
-            ReplicatedStorage:WaitForChild("WinEvent"):FireServer(9999999)
-        end)
-        wait(0.5)
-    end
-end)
+AutoTab:AddToggle({
+	Name = "Auto Train",
+	Default = false,
+	Callback = function(Value)
+		getgenv().autoTrain = Value
+		while getgenv().autoTrain do
+			pcall(function()
+				game:GetService("ReplicatedStorage").Remotes.Train:FireServer()
+			end)
+			task.wait(0.1)
+		end
+	end
+})
 
--- Auto Train
-Window:Toggle("💪 Auto Train", {default = false}, function(state)
-    getgenv().autoTrain = state
-    while getgenv().autoTrain do
-        pcall(function()
-            -- Replace 'TrainRemote' with actual training remote
-            ReplicatedStorage:WaitForChild("TrainRemote"):FireServer()
-        end)
-        wait(0.2)
-    end
-end)
+AutoTab:AddToggle({
+	Name = "Auto Race",
+	Default = false,
+	Callback = function(Value)
+		getgenv().autoRace = Value
+		while getgenv().autoRace do
+			pcall(function()
+				game:GetService("ReplicatedStorage").Remotes.StartRace:FireServer()
+			end)
+			task.wait(1)
+		end
+	end
+})
 
--- Auto Rebirth
-Window:Toggle("🔁 Auto Rebirth", {default = false}, function(state)
-    getgenv().autoRebirth = state
-    while getgenv().autoRebirth do
-        pcall(function()
-            -- Replace 'RebirthRemote' with actual rebirth remote
-            ReplicatedStorage:WaitForChild("RebirthRemote"):FireServer()
-        end)
-        wait(1)
-    end
-end)
+--===[ Rebirth Tab ]===--
+local RebirthTab = Window:MakeTab({
+	Name = "Rebirth",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
 
--- Credits
-Window:Section("Youtube: Tora IsMe (UI Style Inspired)")
+RebirthTab:AddButton({
+	Name = "Instant Rebirth",
+	Callback = function()
+		pcall(function()
+			game:GetService("ReplicatedStorage").Remotes.Rebirth:FireServer()
+		end)
+	end
+})
+
+--===[ Fuse Tab ]===--
+local FuseTab = Window:MakeTab({
+	Name = "Fuse",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+-- Store selected pet ID
+getgenv().selectedPetID = nil
+
+FuseTab:AddTextbox({
+	Name = "Enter Pet ID",
+	Default = "",
+	TextDisappear = false,
+	Callback = function(Value)
+		getgenv().selectedPetID = Value
+	end
+})
+
+FuseTab:AddButton({
+	Name = "Fuse Selected Pet Once",
+	Callback = function()
+		pcall(function()
+			if getgenv().selectedPetID then
+				game:GetService("ReplicatedStorage").Remotes.Fuse:InvokeServer(getgenv().selectedPetID)
+			end
+		end)
+	end
+})
+
+FuseTab:AddToggle({
+	Name = "Auto Fuse Selected Pet",
+	Default = false,
+	Callback = function(Value)
+		getgenv().autoFuse = Value
+		while getgenv().autoFuse do
+			pcall(function()
+				if getgenv().selectedPetID then
+					game:GetService("ReplicatedStorage").Remotes.Fuse:InvokeServer(getgenv().selectedPetID)
+				end
+			end)
+			task.wait(1.5) -- wait time between fuses
+		end
+	end
+})
+
+--===[ Notification ]===--
+OrionLib:MakeNotification({
+	Name = "Dragon Training",
+	Content = "GUI Loaded Successfully!",
+	Image = "rbxassetid://4483345998",
+	Time = 5
+})
+
+OrionLib:Init()
