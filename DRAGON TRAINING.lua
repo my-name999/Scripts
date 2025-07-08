@@ -1,4 +1,4 @@
--- Dragon Training GUI by ChatGPT & Sam Altman
+print("Dragon GUI script started")
 
 local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
 local Window = OrionLib:MakeWindow({
@@ -8,7 +8,6 @@ local Window = OrionLib:MakeWindow({
 	ConfigFolder = "DragonTrainer"
 })
 
---===[ Auto Tab ]===--
 local AutoTab = Window:MakeTab({
 	Name = "Auto",
 	Icon = "rbxassetid://4483345998",
@@ -43,7 +42,6 @@ AutoTab:AddToggle({
 	end
 })
 
---===[ Rebirth Tab ]===--
 local RebirthTab = Window:MakeTab({
 	Name = "Rebirth",
 	Icon = "rbxassetid://4483345998",
@@ -59,7 +57,6 @@ RebirthTab:AddButton({
 	end
 })
 
---===[ Fuse Tab ]===--
 local FuseTab = Window:MakeTab({
 	Name = "Fuse",
 	Icon = "rbxassetid://4483345998",
@@ -104,7 +101,6 @@ FuseTab:AddToggle({
 	end
 })
 
---===[ Notify & Initialize GUI ]===--
 OrionLib:MakeNotification({
 	Name = "Dragon Training",
 	Content = "GUI Loaded Successfully!",
