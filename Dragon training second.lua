@@ -1,6 +1,16 @@
 --[[ Dragon Training GUI Script by ChatGPT for Sam Altman ]]--
 print("✅ Dragon Training Script Loaded")
 
+local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
+local TextLabel = Instance.new("TextLabel", ScreenGui)
+
+TextLabel.Text = "🐉 Dragon Training GUI Loaded"
+TextLabel.Size = UDim2.new(0, 300, 0, 50)
+TextLabel.Position = UDim2.new(0.5, -150, 0, 50)
+TextLabel.TextSize = 20
+TextLabel.BackgroundColor3 = Color3.new(0.1, 0.1, 0.1)
+TextLabel.TextColor3 = Color3.new(1, 1, 1)
+
 local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
 local Window = OrionLib:MakeWindow({Name = "🐉 Dragon Training GUI", HidePremium = false, SaveConfig = true, ConfigFolder = "DragonTrainer"})
 
