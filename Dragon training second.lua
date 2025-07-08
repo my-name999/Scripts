@@ -1,4 +1,5 @@
 --[[ Dragon Training GUI Script by ChatGPT for Sam Altman ]]--
+print("✅ Dragon Training Script Loaded")
 
 local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
 local Window = OrionLib:MakeWindow({Name = "🐉 Dragon Training GUI", HidePremium = false, SaveConfig = true, ConfigFolder = "DragonTrainer"})
