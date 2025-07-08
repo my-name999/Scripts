@@ -1,7 +1,12 @@
 -- Dragon Training GUI by ChatGPT & Sam Altman
 
 local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
-local Window = OrionLib:MakeWindow({Name = "🐉 Dragon Training GUI", HidePremium = false, SaveConfig = true, ConfigFolder = "DragonTrainer"})
+local Window = OrionLib:MakeWindow({
+	Name = "🐉 Dragon Training GUI",
+	HidePremium = false,
+	SaveConfig = true,
+	ConfigFolder = "DragonTrainer"
+})
 
 --===[ Auto Tab ]===--
 local AutoTab = Window:MakeTab({
@@ -61,7 +66,6 @@ local FuseTab = Window:MakeTab({
 	PremiumOnly = false
 })
 
--- Store selected pet ID
 getgenv().selectedPetID = nil
 
 FuseTab:AddTextbox({
@@ -95,12 +99,12 @@ FuseTab:AddToggle({
 					game:GetService("ReplicatedStorage").Remotes.Fuse:InvokeServer(getgenv().selectedPetID)
 				end
 			end)
-			task.wait(1.5) -- wait time between fuses
+			task.wait(1.5)
 		end
 	end
 })
 
---===[ Notification ]===--
+--===[ Notify & Initialize GUI ]===--
 OrionLib:MakeNotification({
 	Name = "Dragon Training",
 	Content = "GUI Loaded Successfully!",
