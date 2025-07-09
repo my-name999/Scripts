@@ -1,54 +1,33 @@
--- Create a ScreenGui and place it in the player's PlayerGui
-local player = game.Players.LocalPlayer
-local screenGui = Instance.new("ScreenGui")
-screenGui.Parent = player.PlayerGui
-screenGui.Name = "FakeShopGui"
+-- Make Dragon and Kitsune appear "In Stock" in fruit shop (client-side only)
 
--- Create the background frame for the fake shop
-local frame = Instance.new("Frame")
-frame.Size = UDim2.new(0, 400, 0, 600)
-frame.Position = UDim2.new(0.5, -200, 0.5, -300)
-frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-frame.BackgroundTransparency = 0.5
-frame.Parent = screenGui
+local replicatedStorage = game:GetService("ReplicatedStorage")
+local playerGui = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
--- Title Text
-local titleLabel = Instance.new("TextLabel")
-titleLabel.Size = UDim2.new(1, 0, 0, 50)
-titleLabel.Position = UDim2.new(0, 0, 0, 0)
-titleLabel.Text = "Fruit Shop"
-titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-titleLabel.TextSize = 24
-titleLabel.BackgroundTransparency = 1
-titleLabel.Parent = frame
+local function fakeStock()
+    local shopGui = playerGui:FindFirstChild("FruitShop") -- GUI name may vary
+    if not shopGui then
+        warn("Fruit shop UI not found. Open the shop first.")
+        return
+    end
 
--- Create the Dragon Fruit Button
-local dragonButton = Instance.new("TextButton")
-dragonButton.Size = UDim2.new(1, -40, 0, 50)
-dragonButton.Position = UDim2.new(0, 20, 0, 70)
-dragonButton.Text = "Dragon Fruit (In Shop)"
-dragonButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-dragonButton.TextSize = 18
-dragonButton.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
-dragonButton.Parent = frame
+    local fruits = {
+        ["Dragon"] = true,
+        ["Kitsune"] = true
+    }
 
--- Create the Kitsune Fruit Button
-local kitsuneButton = Instance.new("TextButton")
-kitsuneButton.Size = UDim2.new(1, -40, 0, 50)
-kitsuneButton.Position = UDim2.new(0, 20, 0, 140)
-kitsuneButton.Text = "Kitsune Fruit (In Shop)"
-kitsuneButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-kitsuneButton.TextSize = 18
-kitsuneButton.BackgroundColor3 = Color3.fromRGB(255, 150, 50)
-kitsuneButton.Parent = frame
+    for _, frame in ipairs(shopGui:GetDescendants()) do
+        if frame:IsA("TextLabel") and fruits[frame.Text] then
+            local parent = frame.Parent
+            for _, element in ipairs(parent:GetChildren()) do
+                if element:IsA("TextLabel") and element.Text:find("Out of Stock") then
+                    element.Text = "In Stock"
+                    element.TextColor3 = Color3.fromRGB(0, 255, 0)
+                    element.Font = Enum.Font.SourceSansBold
+                    element.TextSize = 18
+                end
+            end
+        end
+    end
+end
 
--- Define the functions when buttons are clicked (for show only, no effect on game)
-dragonButton.MouseButton1Click:Connect(function()
-    print("You clicked Dragon Fruit! (Fake Action)")
-    -- You can add any additional actions here, like showing a fake confirmation, etc.
-end)
-
-kitsuneButton.MouseButton1Click:Connect(function()
-    print("You clicked Kitsune Fruit! (Fake Action)")
-    -- You can add any additional actions here, like showing a fake confirmation, etc.
-end)
+fakeStock()
